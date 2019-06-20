@@ -172,6 +172,12 @@ class kuka_iiwa_ros_client:
         # e.g. 1.0 1459253274.11
         self.JointJerk = ( float(data.data.split(' ')[0]), float(data.data.split(' ')[1]) )
     
+    def JointPosition_callback(self, data):
+        #rospy.loginfo(rospy.get_caller_id() + "Received JointPosition " + str(data.data) )
+        # e.g. [0.0, 0.17, 0.0, 1.92, 0.0, 0.35, 0.0] 1459253274.1
+        self.JointPosition = ([float(x) for x in data.data.split(']')[0][1:].split(', ')], float(data.data.split(']')[1]))
+
+    
     #   ~M: callbacks ===========================
 
 #   ~Class: Kuka iiwa ROS client    #####################
@@ -205,35 +211,31 @@ my_client.send_command('setCartVelocity 10000')     # If the CartVelocity is not
         
 last_command='nothing'
 while True:
-    if my_client.Transcript == 'move please'and last_command != "mechanical zero position":
+    if my_client.Transcript == 'move please'and last_command != "move please":
             
             # Move close to a start position.
             my_client.send_command('setPosition 0 0 0 0 82.08 0')
             time.sleep(1)
             my_client.send_command('setPosition 0 40 0 -40 0 70 0')
+            last_command =  my_client.Transcript
     
-    if my_client.Transcript == 'pick up the hammer'and last_command != "mechanical zero position":
+    if my_client.Transcript == 'pick up the hammer'and last_command != 'pick up the hammer':
         
         # Move close to a start position.
         my_client.send_command('setPosition 0 40 0 -40 0 70 0')
         time.sleep(1)
         my_client.send_command('setPosition  0 0 0 82.08 0')
+        last_command =  my_client.Transcript
         
     if (my_client.Transcript)== "start position" and last_command != "start position":
         my_client.send_command('setPosition 80 -30 0 60 0 90 0')
         last_command =  my_client.Transcript
+	
     
     if (my_client.Transcript)== "mechanical zero position" and last_command != "mechanical zero position":
         my_client.send_command('setPosition 0 0 0 0 0 0 0')
         last_command =  my_client.Transcript
         
-    def JointPosition_callback(self, data):
-        #rospy.loginfo(rospy.get_caller_id() + "Received JointPosition " + str(data.data) )
-        # e.g. [0.0, 0.17, 0.0, 1.92, 0.0, 0.35, 0.0] 1459253274.1
-        self.JointPosition = ([float(x) for x in data.data.split(']')[0][1:].split(', ')], float(data.data.split(']')[1]))
+  
 
 
-
-while True:
-    
-    pass
