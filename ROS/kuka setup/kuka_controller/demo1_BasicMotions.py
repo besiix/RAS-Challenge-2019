@@ -13,11 +13,14 @@
 #######################################################################################################################
 from client_lib import *
 
+import time
 # Making a connection object.
 my_client = kuka_iiwa_ros_client()
 
+
 # Wait until iiwa is connected zzz!
-while (not my_client.isready): pass
+while (not my_client.isready):
+	pass
 print('Started!')
 
 # Initializing Tool 1
@@ -31,7 +34,10 @@ my_client.send_command('setCartVelocity 10000')     # If the CartVelocity is not
 
 
 # Move close to a start position.
-my_client.send_command('setPosition 0 49.43 0 -48.5 0 82.08 0')
+my_client.send_command('setPosition 0 0 0 0 0 0 0')
+time.sleep(1)
 
 while True:
-	pass
+	time.sleep(2)
+	my_client.send_command('setPosition 0 49.43 0 -48.5 0 82.08 0')
+
