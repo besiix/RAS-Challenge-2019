@@ -47,13 +47,13 @@ class object_locator:
 		print("CALLBACK: kinect_callback")
 		try:
 			cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
-		except CvBridgeError as e:
-			print(e)
-		else:
 			print("Writing image to: " + self.image_path)
 			cv2.imwrite(self.image_path, cv_image)
 			cv2.imshow("Viewer", cv_image)
 			cv2.waitKey(1000)
+		except CvBridgeError as e:
+			print(e)
+			
 
 	#============================ DETECT OBJECTS ==============================
 	''' Callback for NLP - find location of object name in string '''
