@@ -206,42 +206,13 @@ my_client.send_command('setCartVelocity 10000')     # If the CartVelocity is not
     #            my_client.send_command('vision hammer position') # horisental
        #  my_client.send_command('vision hammer position') # vertical
         
-def initiate_position():
-    my_client.send_command('setPosition 0 0 0 0 0 0 0')
-    time.sleep(1)
-
-def scan_position():
-    time.sleep(2)
-    my_client.send_command('setPosition 0 49.43 0 -48.5 0 82.08 0')
-
-def move_to_spanner():
-    #move to the spanner
-    my_client.send_command('MoveXYZABC 570 41 234 -180 2.5 -178')
-
-def move_to_hammer():
-    #move to the hammer
-    my_client.send_command('MoveXYZABC 463 -62 235 -180 4.8 -178')
-    
-
-def move_to_screwdriver():
-    #Move to the screwdriver
-    my_client.send_command('MoveXYZABC 642.37 130.48 231.78 -180 1.04 -176.37')
-
-def open_gripper():
-    my_client.send_command('OpenGripper')
-
-def close_gripper():
-    my_client.send_command('CloseGripper')
-
-def move_to_location():
-    my_client.send_command()
-
-
+        
+        
         
 last_command='nothing'
 while True:
-    initiate_position()
     if my_client.Transcript == 'move please'and last_command != "move please":
+            
             # Move close to a start position.
             my_client.send_command('setPosition 0 0 0 0 82.08 0')
             time.sleep(1)
@@ -249,27 +220,20 @@ while True:
             last_command =  my_client.Transcript
     
     if my_client.Transcript == 'pick up the hammer'and last_command != 'pick up the hammer':
-        move_to_hammer()
-        open_gripper()
-        close_gripper()
-
-    if my_client.Transcript == 'pick up the spanner'and last_command != 'pick up the spanner':
-        move_to_spanner()
-        open_gripper()
-        close_gripper()
-
-    if my_client.Transcript == 'pick up the screwdriver'and last_command != 'pick up the screwdriver':
-        move_to_screwdriver()
-        open_gripper()
-        close_gripper()
-
-    #if (my_client.Transcript)== "start position" and last_command != "start position":
-        '''
+        
+        # Move close to a start position.
+        my_client.send_command('setPosition 0 40 0 -40 0 70 0')
+        time.sleep(1)
+        my_client.send_command('setPosition  0 0 0 82.08 0')
+        last_command =  my_client.Transcript
+        
+    if (my_client.Transcript)== "start position" and last_command != "start position":
         my_client.send_command('setPosition 80 -30 0 60 0 90 0')
         last_command =  my_client.Transcript
-	'''    
-    if (my_client.Transcript)== "go to the scan position" and last_command != "go to the scan position":
-        scan_position()
+	
+    
+    if (my_client.Transcript)== "mechanical zero position" and last_command != "mechanical zero position":
+        my_client.send_command('setPosition 0 0 0 0 0 0 0')
         last_command =  my_client.Transcript
         
   
