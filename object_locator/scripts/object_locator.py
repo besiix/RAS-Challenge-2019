@@ -52,7 +52,7 @@ class object_locator:
 		else:
 			print("Writing image to: " + self.image_path)
 			cv2.imwrite(self.image_path, cv_image)
-			cv2.imshow(cv_image)
+			cv2.imshow("Viewer", cv_image)
 			cv2.waitKey(1000)
 
 	#============================ DETECT OBJECTS ==============================
