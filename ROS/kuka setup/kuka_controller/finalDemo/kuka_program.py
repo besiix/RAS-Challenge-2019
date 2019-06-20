@@ -32,12 +32,51 @@ my_client.send_command('setJointVelocity 1.0')      # If the JointVelocity is no
 my_client.send_command('setJointJerk 1.0')          # If the JointJerk is not set, the defult value is 1.0.
 my_client.send_command('setCartVelocity 10000')     # If the CartVelocity is not set, the defult value is 100
 
-
-# Move close to a start position.
-my_client.send_command('setPosition 0 0 0 0 0 0 0')
-time.sleep(1)
-
 while True:
+# Move close to a start position.
+	my_client.send_command('setPosition 0 0 0 0 0 0 0')
+	time.sleep(1)
+
+	#Move to the scan position
 	time.sleep(2)
 	my_client.send_command('setPosition 0 49.43 0 -48.5 0 82.08 0')
+
+	#move to the close position
+	time.sleep(2)
+	my_client.send_command('setPosition 10 49.43 -10 80 0 55 0')
+
+
+	#move to the spanner
+	my_client.send_command('MoveXYZABC 570 41 234 -180 2.5 -178')
+	
+
+	#move to the hammer
+	my_client.send_command('MoveXYZABC 463 -62 235 -180 4.8 -178')
+
+	#Move to the screwdriver
+	my_client.send_command('MoveXYZABC 642.37 130.48 231.78 -180 1.04 -176.37')
+
+	#turn on the gripper
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

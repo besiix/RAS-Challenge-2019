@@ -32,12 +32,11 @@ my_client.send_command('setJointVelocity 1.0')      # If the JointVelocity is no
 my_client.send_command('setJointJerk 1.0')          # If the JointJerk is not set, the defult value is 1.0.
 my_client.send_command('setCartVelocity 10000')     # If the CartVelocity is not set, the defult value is 100
 
-
 # Move close to a start position.
-my_client.send_command('setPosition 0 0 0 0 0 0 0')
+my_client.send_command('setPosition 0 49.43 0 -48.5 0 82.08 0')
 time.sleep(1)
 
-while True:
-	time.sleep(2)
-	my_client.send_command('setPosition 0 49.43 0 -48.5 0 82.08 0')
-
+#m
+my_client.send_command('setCompliance 10 10 400 300 200 200')
+time.sleep(1)
+	

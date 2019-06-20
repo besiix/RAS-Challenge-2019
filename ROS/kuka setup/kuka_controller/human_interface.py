@@ -1,21 +1,22 @@
 #!/usr/bin/env python
 
-from client_lib_GP import *
+from client_lib_challenge import *
 from numpy import *
 import time
 
 #The function to prase the json data to strings.
 def prase_json_data(object):
-
+	pass
 
 #All oral words can be changed. These are not settled
 def pick_up_command(string):
-	if string == "pick up the object":
+	if string == "pick up the hammer":
 		return True
-	elif string == "pick the object up":
+	elif string == "pick up the spanner":
 		return True
-	else: 
-		return False 
+	elif string == "pick up the screwdriver":
+		return True
+
 
 def reset_compliance_command(string):
 	if string == "reset push mode":
@@ -78,8 +79,7 @@ my_client.Moved_to_object(False)
 last_command = "none"
 
 while True:
-
-    #here is the logic part to judge which task or goal we want to do and 
+	#here is the logic part to judge which task or goal we want to do and 
     #complete them propertly
     length_message = len(my_client.Transcript)
     print my_client.Transcript
@@ -92,10 +92,15 @@ while True:
         my_client.send_command('setCompliance 1000 1000 5000 200 200 200')
         last_command = "set push mode on"
     
-    if pick_up_command(my_client.Transcript) and last_command != "pick up the object"):
+    if pick_up_command(my_client.Transcript) and last_command != "pick up the object":
         if not objectPicked:
             #Getting the position from the cameara
-
+        	if my_client.Transcript == "spanner":
+        		my_client.send_command('MoveXYZABC 570 41 234 -180 2.5 -178')
+        	if my_client.Transcript == "hammer":
+        		my_client.send_command('MoveXYZABC 463 -62 235 -180 4.8 -178')
+        	if my_client.Transcript == "screwdriver":
+        		my_client.send_command('MoveXYZABC 642.37 130.48 231.78 -180 1.04 -176.37')
 
 
     #in this part, we use two kinds of commands to initiate a start position
@@ -105,8 +110,7 @@ while True:
 		objectPicked = False
 		my_client.Moved_to_object(False)
 		last_command = "start position"
-
-	elif drop_obj_command(my_client.Transcript) and last_command != "drop the object":
+    elif start_pos_command(my_client.Transcript) and last_command != "drop the object":
 		my_client.send_command('setPositionXYZABC 420 396 500 -180 0 -180 ptp')
 		time.sleep(1)
 		my_client.send_command('setPositionXYZABC 420 396 350 -180 0 -180 ptp')

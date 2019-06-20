@@ -13,7 +13,6 @@ version = 'V15032017'
 #######################################################################################################################
 import rospy, os
 from std_msgs.msg import String
-import time
 
 
 def cl_black(msge): return '\033[30m'+msge+'\033[0m'
@@ -53,17 +52,14 @@ class kuka_iiwa_ros_client:
         self.isCollision  = (False, None)
         self.isMastered = (False, None)
         self.OperationMode = (None, None)
-        # add something?
-        self.Transcript = "the query you asked for? la la la"
-        
 
         os.system('clear')
-        print (cl_pink('\n=========================================='))
-        print (cl_pink('<   <  < << SHEFFIELD ROBOTICS >> >  >   >'))
-        print (cl_pink('=========================================='))
-        print (cl_pink(' KUKA API for ROS'))
-        print (cl_pink(' Client Version: ' + version))
-        print (cl_pink('==========================================\n'))
+        print cl_pink('\n==========================================')
+        print cl_pink('<   <  < << SHEFFIELD ROBOTICS >> >  >   >')
+        print cl_pink('==========================================')
+        print cl_pink(' KUKA API for ROS')
+        print cl_pink(' Client Version: ' + version)
+        print cl_pink('==========================================\n')
 
 
         #    Make a listener for all kuka_iiwa data
@@ -79,25 +75,18 @@ class kuka_iiwa_ros_client:
         rospy.Subscriber("isMastered", String, self.isMastered_callback)
         rospy.Subscriber("OperationMode", String, self.OperationMode_callback)
         rospy.Subscriber("isReadyToMove", String, self.isReadyToMove_callback)
-        rospy.Subscriber("moveit_iiwa", String, self.moveit_iiwa_callback)
-        # add more topics
-        rospy.Subscriber("transcript_topic", String, self.transcript_topic_callback)
-        
+	rospy.Subscriber("moveit_iiwa", String, self.moveit_iiwa_callback)
 
         #   Make Publishers for kuka_iiwa commands
         self.pub_kuka_command = rospy.Publisher('kuka_command', String, queue_size=10)
-        #?????
 
         #   Make kuka_iiwa client
         rospy.init_node('kuka_iiwa_client', anonymous=False)
         self.rate = rospy.Rate(100) #    100hz update rate.
 
     #   ~M: __init__ ==========================
-    
     def moveit_iiwa_callback(self, data):
-        self.send_command(data.data)
-
-
+	self.send_command(data.data)
 
     def send_command(self, command_str):
         #rospy.loginfo(command_str)
@@ -106,11 +95,11 @@ class kuka_iiwa_ros_client:
 
     #   M: callbacks ===========================
     #   Receiving command string and sending it to KUKA iiwa
-    
-    def transcript_topic_callback(self, data):
-        self.Transcript=data.data
-        
-        
+    def JointPosition_callback(self, data):
+        #rospy.loginfo(rospy.get_caller_id() + "Received JointPosition " + str(data.data) )
+        # e.g. [0.0, 0.17, 0.0, 1.92, 0.0, 0.35, 0.0] 1459253274.1
+        self.JointPosition = ([float(x) for x in data.data.split(']')[0][1:].split(', ')], float(data.data.split(']')[1]))
+
     def isCompliance_callback(self, data):
         #rospy.loginfo(rospy.get_caller_id() + "Received isCompliance " + str(data.data) )
         d = str(data.data).split() # e.g. off 1459253274.11
@@ -172,106 +161,7 @@ class kuka_iiwa_ros_client:
         # e.g. 1.0 1459253274.11
         self.JointJerk = ( float(data.data.split(' ')[0]), float(data.data.split(' ')[1]) )
     
-    def JointPosition_callback(self, data):
-        #rospy.loginfo(rospy.get_caller_id() + "Received JointPosition " + str(data.data) )
-        # e.g. [0.0, 0.17, 0.0, 1.92, 0.0, 0.35, 0.0] 1459253274.1
-        self.JointPosition = ([float(x) for x in data.data.split(']')[0][1:].split(', ')], float(data.data.split(']')[1]))
-
-    
     #   ~M: callbacks ===========================
 
 #   ~Class: Kuka iiwa ROS client    #####################
 ######################################################################################################################
-
-my_client = kuka_iiwa_ros_client()
-
-# Wait until iiwa is connected zzz!
-while (not my_client.isready): pass
-print('Started!')
-
-# Initializing Tool 1
-my_client.send_command('setTool tool1')
-
-# Initializing
-my_client.send_command('setJointAcceleration 1.0')  # If the JointAcceleration is not set, the defult value is 1.0.
-my_client.send_command('setJointVelocity 1.0')      # If the JointVelocity is not set, the defult value is 1.0.
-my_client.send_command('setJointJerk 1.0')          # If the JointJerk is not set, the defult value is 1.0.
-my_client.send_command('setCartVelocity 10000')     # If the CartVelocity is not set, the defult value is 100
-
-
-
-    
-    #        #else:
-    #            data.data == 'pick up the hammer'
-    #            my_client.send_command('vision hammer position') # horisental
-       #  my_client.send_command('vision hammer position') # vertical
-        
-def initiate_position():
-    my_client.send_command('setPosition 0 0 0 0 0 0 0')
-    time.sleep(1)
-
-def scan_position():
-    time.sleep(2)
-    my_client.send_command('setPosition 0 49.43 0 -48.5 0 82.08 0')
-
-def move_to_spanner():
-    #move to the spanner
-    my_client.send_command('MoveXYZABC 570 41 234 -180 2.5 -178')
-
-def move_to_hammer():
-    #move to the hammer
-    my_client.send_command('MoveXYZABC 463 -62 235 -180 4.8 -178')
-    
-
-def move_to_screwdriver():
-    #Move to the screwdriver
-    my_client.send_command('MoveXYZABC 642.37 130.48 231.78 -180 1.04 -176.37')
-
-def open_gripper():
-    my_client.send_command('OpenGripper')
-
-def close_gripper():
-    my_client.send_command('CloseGripper')
-
-def move_to_location():
-    my_client.send_command()
-
-
-        
-last_command='nothing'
-while True:
-    initiate_position()
-    if my_client.Transcript == 'move please'and last_command != "move please":
-            # Move close to a start position.
-            my_client.send_command('setPosition 0 0 0 0 82.08 0')
-            time.sleep(1)
-            my_client.send_command('setPosition 0 40 0 -40 0 70 0')
-            last_command =  my_client.Transcript
-    
-    if my_client.Transcript == 'pick up the hammer'and last_command != 'pick up the hammer':
-        move_to_hammer()
-        open_gripper()
-        close_gripper()
-
-    if my_client.Transcript == 'pick up the spanner'and last_command != 'pick up the spanner':
-        move_to_spanner()
-        open_gripper()
-        close_gripper()
-
-    if my_client.Transcript == 'pick up the screwdriver'and last_command != 'pick up the screwdriver':
-        move_to_screwdriver()
-        open_gripper()
-        close_gripper()
-
-    #if (my_client.Transcript)== "start position" and last_command != "start position":
-        '''
-        my_client.send_command('setPosition 80 -30 0 60 0 90 0')
-        last_command =  my_client.Transcript
-	'''    
-    if (my_client.Transcript)== "go to the scan position" and last_command != "go to the scan position":
-        scan_position()
-        last_command =  my_client.Transcript
-        
-  
-
-

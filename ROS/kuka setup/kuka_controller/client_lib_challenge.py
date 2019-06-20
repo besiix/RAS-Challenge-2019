@@ -53,7 +53,7 @@ class kuka_iiwa_ros_client:
         self.isCollision  = (False, None)
         self.isMastered = (False, None)
         self.OperationMode = (None, None)
-	+++++++++++++++++++++++++++++self.Transcript = "very long and empty string"
+	+++++++++++++++++++++++++++++self.Transcript = ""
 	self.ObjectCoor = " "
 	self.ObjectReached = False
 	self.handOpened = False
@@ -98,11 +98,11 @@ class kuka_iiwa_ros_client:
 
         #The topic for juding if the hand is opened, we need to be sure that we 
         #might have some faults when the state of the hand is not clear
-	    rospy.Subscriber("handClosed", Bool, self.handClosed_callback)
+        rospy.Subscriber("handClosed", Bool, self.handClosed_callback)
 
         #   Make Publishers for kuka_iiwa commands
         self.pub_kuka_command = rospy.Publisher('kuka_command', String, queue_size=10)
-	    self.moved_to_object = rospy.Publisher('moved_to_object', Bool, queue_size=10)
+        self.moved_to_object = rospy.Publisher('moved_to_object', Bool, queue_size=10)
 
         #   Make kuka_iiwa client
         rospy.init_node('kuka_iiwa_client', anonymous=False)
