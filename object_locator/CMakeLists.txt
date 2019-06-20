@@ -7,13 +7,16 @@ project(object_locator)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS
+find_package(catkin REQUIRED COMPONENTS 
   cv_bridge
-  opencv2
   rospy
   sensor_msgs
   std_msgs
 )
+
+find_package(OpenCV)
+include_directories(${OpenCV_INCLUDE_DIRS})
+#target_link_libraries(my_awesome_library ${OpenCV_LIBRARIES})
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)

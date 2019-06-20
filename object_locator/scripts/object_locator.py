@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+import sys
 import subprocess
 import json
 import rospy
@@ -9,51 +11,62 @@ from sensor_msgs.msg import Image
 
 class object_locator:
 
+	#============================= CONSTRUCTOR ================================
 	def __init__(self):
 		self.location_pub = rospy.Publisher('control', String, queue_size=10)
-		self.kinect_sub = rospy.Subscriber('/kinect2/hd/image_color', Image, kinect_callback)
-		self.nlp_sub = rospy.Subscriber("nlp", String, nlp_callback)
+		self.kinect_sub = rospy.Subscriber('/kinect2/hd/image_color', Image, self.kinect_callback)
+		self.nlp_sub = rospy.Subscriber("nlp", String, self.nlp_callback)
+		print("Publisher and subscribers set.")
+
 		self.bridge = CvBridge()
-		
+		self.image_path = "~/Pictures/kinect_color.jpeg"
+		print("Image path set: " + self.image_path)
 
-	''' Get json string detection of image sent '''
-	def detect_objects(image_path):
-		image_path = "kinect_color.jpg"
-		response = eval("subprocess.getoutput('curl --insecure -i -F files=@%s https://amrcac922.shef.ac.uk/powerai-vision/api/dlapis/dc89d0e0-57bf-4657-9d10-510d05e2485f')", image_path)
-		output = response.split("\n\n")
-		output = json.loads(output[-1:][0])
-
-		return output['classified']
-
-
+	#============================ LOCATE OBJECT ===============================
 	''' Return position of request object '''
-	def locate_object(target_name):
-		detected = detect_objects()
+	def locate_object(self, object_name):
+		
+		print("Image sending, looking for " + object_name)
+		response = eval("subprocess.getoutput('curl --insecure -i -F files=@%s https://amrcac922.shef.ac.uk/powerai-vision/api/dlapis/dc89d0e0-57bf-4657-9d10-510d05e2485f')", self.image_path)
+		
+		print("Received response, processing...")		
+		output = response.split("\n\n")
+		output = json.loads(output[-1:][0])		
+		detected = output['classified']
 
 		for instance in detected:
-			if instance['label'] == target_name:
+			if instance['label'] == object_name:
+				print(object_name + " found!")
 				return instance
+		print(object_name + " not found.")
 		return []
 
-
+	#============================ DETECT OBJECTS ==============================
 	''' Callback for kinect - writes image to file '''
 	def kinect_callback(self, data):
+		print("CALLBACK: kinect_callback")
 		try:
 			cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
 		except CvBridgeError as e:
 			print(e)
 		else:
-			cv2.imwrite('kinect_color.jpg', cv2_img)
+			print("Writing image to: " + self.image_path)
+			cv2.imwrite(self.image_path, cv2_img)
 		cv2.waitKey(1000)
 
-
+	#============================ DETECT OBJECTS ==============================
 	''' Callback for NLP - find location of object name in string '''
 	def nlp_callback(self, object_name):
+		print("CALLBACK: nlp_callback")
 		print("I heard %s", object_name.data)
-		self.location_pub.publish(locate_object(object_name.data))
+		location = locate_object(object_name.data)
+		print(location)
+		self.location_pub.publish(location)
+
 
 
 def main(args):
+	print("Starting object locator...")
 	obj_find = object_locator()
 	rospy.init_node('vision', anonymous=True)
 
