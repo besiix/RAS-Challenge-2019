@@ -14,7 +14,7 @@ class object_locator:
 	#============================= CONSTRUCTOR ================================
 	def __init__(self):
 		self.location_pub = rospy.Publisher('control', String, queue_size=10)
-		self.kinect_sub = rospy.Subscriber('/kinect2/hd/image_color', Image, self.kinect_callback)
+		self.kinect_sub = rospy.Subscriber('/kinect2/sd/image_color_rect', Image, self.kinect_callback)
 		self.nlp_sub = rospy.Subscriber("nlp", String, self.nlp_callback)
 		print("Publisher and subscribers set.")
 
@@ -51,8 +51,9 @@ class object_locator:
 			print(e)
 		else:
 			print("Writing image to: " + self.image_path)
-			cv2.imwrite(self.image_path, cv2_img)
-		cv2.waitKey(1000)
+			cv2.imwrite(self.image_path, cv_image)
+			cv2.imshow(cv_image)
+			cv2.waitKey(1000)
 
 	#============================ DETECT OBJECTS ==============================
 	''' Callback for NLP - find location of object name in string '''
@@ -67,9 +68,8 @@ class object_locator:
 
 def main(args):
 	print("Starting object locator...")
-	obj_find = object_locator()
 	rospy.init_node('vision', anonymous=True)
-
+	obj_find = object_locator()
 	try:
 		rospy.spin()
 	except KeyboardInterrupt:
