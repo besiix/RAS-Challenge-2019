@@ -252,17 +252,17 @@ while True:
         move_to_hammer()
         open_gripper()
         close_gripper()
-
+        last_command =  my_client.Transcript
     if my_client.Transcript == 'pick up the spanner'and last_command != 'pick up the spanner':
         move_to_spanner()
         open_gripper()
         close_gripper()
-
+        last_command =  my_client.Transcript
     if my_client.Transcript == 'pick up the screwdriver'and last_command != 'pick up the screwdriver':
         move_to_screwdriver()
         open_gripper()
         close_gripper()
-
+        last_command =  my_client.Transcript
     #if (my_client.Transcript)== "start position" and last_command != "start position":
         '''
         my_client.send_command('setPosition 80 -30 0 60 0 90 0')

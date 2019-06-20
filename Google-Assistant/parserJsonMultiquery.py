@@ -21,5 +21,5 @@ def readJson(f):
     
     return (queryPatterns)
 
-queryPatterns = readJson('team2.json')
+queryPatterns = readJson('team2v2.json')
 

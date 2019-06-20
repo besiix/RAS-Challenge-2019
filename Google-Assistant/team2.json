@@ -5,7 +5,7 @@
         "category": "PRODUCTIVITY"
     },
     "actions": [
-        {
+    {
             "name": "go to scan position",
             "availability": {
                 "deviceClasses": [
@@ -64,7 +64,7 @@
                         "items": [
                             {
                                 "simpleResponse": {
-                                    "textToSpeech": "Ok, I can move a bit. What should I do now?"
+                                    "textToSpeech": "la la la la la. Ok, I can move a bit. What should I do now?"
                                 }
                             },
                             {
@@ -114,7 +114,7 @@
             }
         },
         {
-            "name": "release hammer on default position",
+            "name": "release hammer position one",
             "availability": {
                 "deviceClasses": [
                     {
@@ -123,10 +123,10 @@
                 ]
             },
             "intent": {
-                "name": "com.example.intents.ReleaseHammerOnDefaultPosition",
+                "name": "com.example.intents.ReleaseHammerPositionOne",
                 "trigger": {
                     "queryPatterns": [
-                        "release hammer on default position"
+                        "release hammer position one"
                     ]
                 }
             },
@@ -136,12 +136,12 @@
                         "items": [
                             {
                                 "simpleResponse": {
-                                    "textToSpeech": "Ok, I release the hammer now!"
+                                    "textToSpeech": "Nice command! Ok, I release the hammer now!"
                                 }
                             },
                             {
                                 "deviceExecution": {
-                                    "command": "ReleaseHammerOnDefaultPosition"
+                                    "command": "ReleaseHammerPositionOne"
                                 }
                             }
                         ]
@@ -186,7 +186,7 @@
             }
         },
         {
-            "name": "release spanner on default position",
+            "name": "release spanner tool",
             "availability": {
                 "deviceClasses": [
                     {
@@ -195,10 +195,10 @@
                 ]
             },
             "intent": {
-                "name": "com.example.intents.ReleaseSpannerOnDefaultPosition",
+                "name": "com.example.intents.ReleaseSpannerTool",
                 "trigger": {
                     "queryPatterns": [
-                        "release spanner on default position"
+                        "release spanner tool"
                     ]
                 }
             },
@@ -208,12 +208,12 @@
                         "items": [
                             {
                                 "simpleResponse": {
-                                    "textToSpeech": "Ok, I release the spanner now!"
+                                    "textToSpeech": "Nice command! I like you very much. Ok, I release the spanner now!"
                                 }
                             },
                             {
                                 "deviceExecution": {
-                                    "command": "ReleaseSpannerOnDefaultPosition"
+                                    "command": "ReleaseSpannerTool"
                                 }
                             }
                         ]
@@ -258,7 +258,7 @@
             }
         },
         {
-            "name": "release screwdriver on default position",
+            "name": "release screwdriver position one",
             "availability": {
                 "deviceClasses": [
                     {
@@ -267,10 +267,10 @@
                 ]
             },
             "intent": {
-                "name": "com.example.intents.ReleaseScrewdriverOnDefaultPosition",
+                "name": "com.example.intents.releaseScrewdriverPositionOne",
                 "trigger": {
                     "queryPatterns": [
-                        "release screwdriver on default position"
+                        "release screwdriver position one"
                     ]
                 }
             },
@@ -280,12 +280,12 @@
                         "items": [
                             {
                                 "simpleResponse": {
-                                    "textToSpeech": "Ok, I release the screwdriver now!"
+                                    "textToSpeech": "Nice command! please give high score. Ok, I release the screwdriver now!"
                                 }
                             },
                             {
                                 "deviceExecution": {
-                                    "command": "ReleaseScrewdriverOnDefaultPosition"
+                                    "command": "releaseScrewdriverPositionOne"
                                 }
                             }
                         ]
