@@ -1,12 +1,11 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Jun 19 16:53:54 2019
+#!/usr/bin/env python
 
-@author: wuchenhao
-"""
-import json
+from client_final import *
+from numpy import *
+import time
+from parserJsonMultiquery import *
 
+#The function to prase the json data to strings.
 def readJson(f):
     file = open(f,'r')
     
@@ -21,5 +20,5 @@ def readJson(f):
     
     return (queryPatterns)
 
-queryPatterns = readJson('team2v2.json')
-
+def function():
+	pass
