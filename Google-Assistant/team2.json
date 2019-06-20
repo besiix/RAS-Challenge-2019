@@ -6,6 +6,42 @@
     },
     "actions": [
         {
+            "name": "go to scan position",
+            "availability": {
+                "deviceClasses": [
+                    {
+                        "assistantSdkDevice": {}
+                    }
+                ]
+            },
+            "intent": {
+                "name": "com.example.intents.GoToScanPosition",
+                "trigger": {
+                    "queryPatterns": [
+                        "go to scan position"
+                    ]
+                }
+            },
+            "fulfillment": {
+                "staticFulfillment": {
+                    "templatedResponse": {
+                        "items": [
+                            {
+                                "simpleResponse": {
+                                    "textToSpeech": "Nice command, yes I go to scan position now. What should I do now?"
+                                }
+                            },
+                            {
+                                "deviceExecution": {
+                                    "command": "GoToScanPosition"
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        {
             "name": "move please",
             "availability": {
                 "deviceClasses": [
